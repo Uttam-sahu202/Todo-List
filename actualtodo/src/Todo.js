@@ -7,48 +7,31 @@ export default function Todo() {
   const [listitem, setlistitem] = useState([]);
   const [charector, setcharector] = useState("");
 
-  function collectingtext(e) {
+  const collectingtext = (e) => {
     setcharector(e.target.value);
   }
 
-
-  function addingInTodoList() {
-    let temp = [...listitem];
-    temp.push(charector);
-    setlistitem(
-      temp
-    )
-
-    console.log(listitem);
+  const addingInTodoList = () => {
+    let newList = [...listitem, charector];
+    setlistitem(newList)
     setcharector('');
-
   }
 
-
-  function Todolist() {
-    function deletingitem(item, index) {
-      const afterdeletingList = listitem.filter((_, i) => i !== index);
-      setlistitem(afterdeletingList);
-    }
-
-    const list = listitem.map((item, index) => {
-      return (<li>{item}
-        <button key={index} onClick={() => deletingitem(item, index)}>Delete</button>
-      </li>)
-    })
-
-
-
-
-    return list;
+  const deletingitem = (indexToDelete) => {
+    const afterdeletingList = listitem.filter((_, index) => index !== indexToDelete);
+    setlistitem(afterdeletingList);
   }
-
 
   return (
     <div>
       <input value={charector} onChange={(e) => collectingtext(e)} placeholder='add your todos'></input>
       <button onClick={() => addingInTodoList()}>Add</button>
-      <Todolist />
+      {listitem.map((curr, index) => (
+        <div key={`${curr}-${index}`}>
+          <div>{curr}</div>
+          <button onClick={() => deletingitem(index)}>Delete</button>
+        </div>
+      ))}
     </div>
 
   );
